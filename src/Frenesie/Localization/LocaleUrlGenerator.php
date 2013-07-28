@@ -30,7 +30,22 @@ class LocaleUrlGenerator extends \Illuminate\Routing\UrlGenerator {
 
 		$root = $this->getRootUrl($scheme);
 
-		return trim($root.$this->getPrefix().'/'.trim($path.'/'.$tail, '/'), '/');
+		$prefix = true;
+
+		$locales = app('config')->get('localization::localization.locales', array());
+		
+		foreach ($locales as $code => $locale)
+		{
+			if (preg_match("#^{$code}(?:$|/)#i", $path))
+			{
+				$prefix = false;
+				break;
+			}
+		}
+
+		if ($prefix) $root = $root.$this->getPrefix();
+
+		return trim($root.'/'.trim($path.'/'.$tail, '/'), '/');
 	}
 
 	/**
