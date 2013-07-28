@@ -74,17 +74,17 @@ class LocalizationServiceProvider extends ServiceProvider {
 
 		// Here, we will check to see if the incoming request begins with any of the
 		// supported locales. If it does, we will set that locale as this default
-	    // for an application and remove it from the current request path info.
-	    $locale = $this->app['request']->segment(1);
+		// for an application and remove it from the current request path info.
+		$locale = $this->app['request']->segment(1);
 
-	    if (array_key_exists($locale, $locales))
-	    {
-	    	$this->app->setLocale($locale);
+		if (array_key_exists($locale, $locales))
+		{
+			$this->app->setLocale($locale);
 
-	    	$this->app['url']->setPrefix($locale);
+			$this->app['url']->setPrefix($locale);
 
-	    	$this->app['request']->handleUriLocales(array_keys($locales));
-	    }
+			$this->app['request']->handleUriLocales(array_keys($locales));
+		}
 	}
 
 	/**
