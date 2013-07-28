@@ -5,7 +5,7 @@ This laravel package allows you to easily add URI localization features to your 
 
 #### Installation
 
-To install, add this line to `your app/config/app.php` file inside `providers`:
+To install, add this line to your `app/config/app.php` file inside `providers`:
 
 ```php
 'Frenesie\Localization\LocalizationServiceProvider',
