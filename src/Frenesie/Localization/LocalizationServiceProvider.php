@@ -5,13 +5,6 @@ use Illuminate\Support\ServiceProvider;
 class LocalizationServiceProvider extends ServiceProvider {
 
 	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = false;
-
-	/**
 	 * Bootstrap the application events.
 	 *
 	 * @return void
@@ -31,21 +24,7 @@ class LocalizationServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->registerLocaleRequest();
 		$this->registerLocaleUrlGenerator();
-	}
-
-	/**
-	 * Register locale request.
-	 * 
-	 * @return void
-	 */
-	protected function registerLocaleRequest()
-	{
-		$this->app['request'] = $this->app->share(function($app)
-		{
-			return LocaleRequest::createFromGlobals();
-		});
 	}
 
 	/**
@@ -55,7 +34,7 @@ class LocalizationServiceProvider extends ServiceProvider {
 	 */
 	protected function registerLocaleUrlGenerator()
 	{
-		$this->app['url'] = $this->app->share(function($app)
+		$this->app->bind('url', function($app)
 		{
 			$routes = $app['router']->getRoutes();
 

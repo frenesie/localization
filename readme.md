@@ -11,6 +11,14 @@ To install, add this line to your `app/config/app.php` file inside `providers`:
 'Frenesie\Localization\LocalizationServiceProvider',
 ```
 
+We're going to use an extended Request class, at the top of your `bootstrap/start.php`, add the following lines:
+
+```
+use Illuminate\Foundation\Application;
+
+Application::requestClass('Frenesie\Localization\Request');
+```
+
 Then publish the configuration file
 
 ```

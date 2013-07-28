@@ -1,6 +1,6 @@
 <?php namespace Frenesie\Localization;
 
-class LocaleRequest extends \Illuminate\Http\Request {
+class Request extends \Illuminate\Http\Request {
 
 	/**
 	 * Setup the path info for a locale based URI.
