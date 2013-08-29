@@ -43,4 +43,15 @@ class LocaleUrlGenerator extends \Illuminate\Routing\UrlGenerator {
 		$this->prefix = $prefix;
 	}
 
+	/**
+	 * Get the url with a new language.
+	 * 
+	 * @param  string  $locale
+	 * @return string
+	 */
+	public function language($locale, $parameters = array(), $secure = null)
+	{
+		return $this->request->root().'/'.$locale.$this->request->getPathInfo();
+	}
+
 }

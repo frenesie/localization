@@ -25,6 +25,8 @@ class LocalizationServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		$this->registerLocaleUrlGenerator();
+
+		include 'helpers.php';
 	}
 
 	/**
