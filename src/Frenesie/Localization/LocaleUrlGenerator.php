@@ -10,58 +10,16 @@ class LocaleUrlGenerator extends \Illuminate\Routing\UrlGenerator {
 	protected $prefix;
 
 	/**
-	 * Generate a absolute URL to the given path.
+	 * Format the given URL segments into a single URL.
 	 *
+	 * @param  string  $root
 	 * @param  string  $path
-	 * @param  mixed   $parameters
-	 * @param  bool    $secure
+	 * @param  string  $tail
 	 * @return string
 	 */
-	public function to($path, $parameters = array(), $secure = null)
+	protected function trimUrl($root, $path, $tail = '')
 	{
-		if ($this->isValidUrl($path)) return $path;
-
-		$scheme = $this->getScheme($secure);
-
-		// Once we have the scheme we will compile the "tail" by collapsing the values
-		// into a single string delimited by slashes. This just makes it convenient
-		// for passing the array of parameters to this URL as a list of segments.
-		$tail = implode('/', (array) $parameters);
-
-		$root = $this->getRootUrl($scheme);
-
-		$prefix = true;
-
-		$locales = app('config')->get('localization::localization.locales', array());
-		
-		if ($prefix) $root = $root.$this->getPrefix();
-
-		return trim($root.'/'.trim($path.'/'.$tail, '/'), '/');
-	}
-
-	/**
-	 * Get the URL to a named route.
-	 *
-	 * @param  string  $name
-	 * @param  mixed   $parameters
-	 * @param  bool    $absolute
-	 * @return string
-	 */
-	public function route($name, $parameters = array(), $absolute = true)
-	{
-		$route = $this->routes->get($name);
-
-		$parameters = (array) $parameters;
-
-		if (isset($route) and $this->usingQuickParameters($parameters))
-		{
-			$parameters = $this->buildParameterList($route, $parameters);
-		}
-
-		// This is where we set the language prefix to the route.
-		$route->setPath($this->getPrefix().$route->getPath());
-
-		return $this->generator->generate($name, $parameters, $absolute);
+		return trim($root.$this->getPrefix().'/'.trim($path.'/'.$tail, '/'), '/');
 	}
 
 	/**

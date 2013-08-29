@@ -34,7 +34,7 @@ class LocalizationServiceProvider extends ServiceProvider {
 	 */
 	protected function registerLocaleUrlGenerator()
 	{
-		$this->app->bind('url', function($app)
+		$this->app['url'] = $this->app->share(function($app)
 		{
 			$routes = $app['router']->getRoutes();
 
@@ -60,9 +60,9 @@ class LocalizationServiceProvider extends ServiceProvider {
 		{
 			$this->app->setLocale($locale);
 
-			$this->app['url']->setPrefix($locale);
-
 			$this->app['request']->handleUriLocales(array_keys($locales));
+
+			$this->app['url']->setPrefix($locale);
 		}
 	}
 
