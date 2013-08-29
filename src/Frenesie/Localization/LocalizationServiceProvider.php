@@ -58,13 +58,15 @@ class LocalizationServiceProvider extends ServiceProvider {
 		// for an application and remove it from the current request path info.
 		$locale = $this->app['request']->segment(1);
 
+		$defaultLocale = $this->app['config']->get('app.locale');
+
+		$this->app['url']->setDefaultLocale($defaultLocale);
+
 		if (array_key_exists($locale, $locales))
 		{
+			$this->app['request']->handleUriLocales($locale);
+
 			$this->app->setLocale($locale);
-
-			$this->app['request']->handleUriLocales(array_keys($locales));
-
-			$this->app['url']->setPrefix($locale);
 		}
 	}
 

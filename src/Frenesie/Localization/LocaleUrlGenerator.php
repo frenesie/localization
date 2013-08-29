@@ -3,44 +3,21 @@
 class LocaleUrlGenerator extends \Illuminate\Routing\UrlGenerator {
 
 	/**
-	 * The global prefix for the generator.
+	 * Default locale of the application.
 	 * 
 	 * @var  string
 	 */
-	protected $prefix;
+	protected $defautLocale;
 
 	/**
-	 * Format the given URL segments into a single URL.
-	 *
-	 * @param  string  $root
-	 * @param  string  $path
-	 * @param  string  $tail
-	 * @return string
-	 */
-	protected function trimUrl($root, $path, $tail = '')
-	{
-		return trim($root.$this->getPrefix().'/'.trim($path.'/'.$tail, '/'), '/');
-	}
-
-	/**
-	 * Get the global prefix from the generator.
+	 * Set the application default locale.
 	 * 
-	 * @return string
-	 */
-	public function getPrefix()
-	{
-		return isset($this->prefix) ? '/'.$this->prefix : '';
-	}
-
-	/**
-	 * Set a global prefix on the generator.
-	 * 
-	 * @param  string  $prefix
+	 * @param  string  $locale
 	 * @return void
 	 */
-	public function setPrefix($prefix)
+	public function setDefaultLocale($locale)
 	{
-		$this->prefix = $prefix;
+		$this->defaultLocale = $locale;
 	}
 
 	/**
@@ -51,7 +28,12 @@ class LocaleUrlGenerator extends \Illuminate\Routing\UrlGenerator {
 	 */
 	public function language($locale, $parameters = array(), $secure = null)
 	{
-		return $this->request->root().'/'.$locale.$this->request->getPathInfo();
+		// Get the root without the locale.
+		$root = $this->request->root(true);
+
+		$root .= ($this->defaultLocale != $locale) ? '/'.$locale : '';
+
+		return $this->to($root.$this->request->getPathInfo(), $parameters, $secure);
 	}
 
 }

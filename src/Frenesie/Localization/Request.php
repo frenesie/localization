@@ -3,16 +3,44 @@
 class Request extends \Illuminate\Http\Request {
 
 	/**
+	 * The global prefix for the request.
+	 * 
+	 * @var  string
+	 */
+	protected $prefix;
+
+	/**
+	 * Get the global prefix from the generator.
+	 * 
+	 * @return string
+	 */
+	public function getPrefix()
+	{
+		return isset($this->prefix) ? '/'.$this->prefix : '';
+	}
+
+	/**
+	 * Set a global prefix on the generator.
+	 * 
+	 * @param  string  $prefix
+	 * @return void
+	 */
+	public function setPrefix($prefix)
+	{
+		$this->prefix = $prefix;
+	}
+
+	/**
 	 * Setup the path info for a locale based URI.
 	 * 
 	 * @param  array  $locales
 	 * @return string
 	 */
-	public function handleUriLocales(array $locales)
+	public function handleUriLocales($locale)
 	{
-		$locale = $this->segment(1);
+		$this->setPrefix($locale);
 
-		if (in_array($locale, $locales)) return $this->removeLocaleFromUri($locale);
+		return $this->removeLocaleFromUri($locale);
 	}
 
 	/**
@@ -21,10 +49,27 @@ class Request extends \Illuminate\Http\Request {
 	 * @param  string $locale
 	 * @return string
 	 */
-	protected function removeLocaleFromUri($locale)
+	public function removeLocaleFromUri($locale)
 	{
 		$this->pathInfo = '/'.ltrim(substr($this->getPathInfo(), strlen($locale) + 1), '/');
 
 		return $locale;
+	}
+
+	/**
+	 * Get the root URL for the application.
+	 *
+	 * @return string
+	 */
+	public function root($trueRoot = false)
+	{
+		$root = $this->getSchemeAndHttpHost().$this->getBaseUrl();
+
+		if ( ! $trueRoot)
+		{
+			$root .= $this->getPrefix();
+		}
+
+		return rtrim($root, '/');
 	}
 }
