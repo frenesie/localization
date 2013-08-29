@@ -49,7 +49,7 @@ class Request extends \Illuminate\Http\Request {
 	 * @param  string $locale
 	 * @return string
 	 */
-	public function removeLocaleFromUri($locale)
+	protected function removeLocaleFromUri($locale)
 	{
 		$this->pathInfo = '/'.ltrim(substr($this->getPathInfo(), strlen($locale) + 1), '/');
 
