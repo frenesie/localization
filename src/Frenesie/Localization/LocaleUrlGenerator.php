@@ -21,12 +21,12 @@ class LocaleUrlGenerator extends \Illuminate\Routing\UrlGenerator {
 	}
 
 	/**
-	 * Get the url with a new language.
+	 * Get the url with another language.
 	 * 
 	 * @param  string  $locale
 	 * @return string
 	 */
-	public function language($locale, $parameters = array(), $secure = null)
+	public function switchLanguage($locale, $parameters = array(), $secure = null)
 	{
 		// Get the root without the locale.
 		$root = $this->request->root(true);
